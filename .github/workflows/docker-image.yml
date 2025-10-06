@@ -51,6 +51,4 @@ jobs:
       run: cat deployment.yaml 
     - name: Run the deployment
       run: |
-        alias kubectl="minikube kubectl --"
-        kubectl apply -f deployment.yaml 
-    
+        minikube kubectl -- apply -f deployment.yaml 
