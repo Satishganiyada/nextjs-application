@@ -22,4 +22,9 @@ jobs:
       run: docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD_TOKEN }}
     - name: pushing image
       run: docker push satish2323/nextjs-app:v${{ github.run_number }}
+
+    - name: update tag in Deployment file
+      run: |
+        sed "s/TAG_NAME/${{ github.run_number }}/1" deployment.yaml > updated_deployment.yaml 
+        cat updated_deployment.yaml 
       
