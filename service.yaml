@@ -1,0 +1,12 @@
+apiversion: v1
+kind: service
+metadata:
+  name: my-service
+spec:
+  selector:
+    app: nextjs 
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+      nodePort: 30080
