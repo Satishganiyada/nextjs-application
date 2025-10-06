@@ -25,7 +25,7 @@ jobs:
 
     - name: update tag in Deployment file
       run: |
-        sed -i 's|satish2323/nextjs-app:v[0-9]\+|satish2323/nextjs-app:v${{ github.run_number }}|' test.yaml deployment.yaml
+        sed -i 's|satish2323/nextjs-app:v[0-9]\+|satish2323/nextjs-app:v${{ github.run_number }}|' deployment.yaml
         cat deployment.yaml 
 
     - name: push deployment file to repo 
