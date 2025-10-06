@@ -44,6 +44,7 @@ jobs:
         git commit -m "Updated deployment.yaml  from actions"
         git push
   deploy:
+    needs: build
     runs-on: "self-hosted"
     steps:
     - uses: actions/checkout@v4
