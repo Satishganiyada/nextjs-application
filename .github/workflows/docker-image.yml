@@ -18,3 +18,8 @@ jobs:
       run: docker build . --file Dockerfile --tag satish2323/nextjs-app:v${{ github.run_number }}
     - name: check images
       run: docker images
+    - name: docker login
+      run: docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD_TOKEN }}
+    - name: pushing image
+      run: docker push satish2323/nextjs-app:v${{ github.run_number }}
+      
