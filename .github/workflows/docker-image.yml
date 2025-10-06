@@ -25,6 +25,14 @@ jobs:
 
     - name: update tag in Deployment file
       run: |
-        sed "s/TAG_NAME/${{ github.run_number }}/1" deployment.yaml > updated_deployment.yaml 
-        cat updated_deployment.yaml 
-      
+        sed -i 's|satish2323/nextjs-app:v[0-9]\+|satish2323/nextjs-app:v${{ github.run_number }}|' test.yaml deployment.yaml
+        cat deployment.yaml 
+
+    - name: push deployment file to repo 
+      run: |
+        git config --global user.name "Satishganiyada"
+        git config --global user.name "Satishganiyada@users.noreply.github.com"
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+        git add deployment.yaml 
+        git commit -m "Updated deployment.yaml  from actions"
+        git push
