@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: nextjs
-          image: satish2323/nextjs-app:v12
+          image: satish2323/nextjs-app:v13
           imagePullPolicy: Always     
           ports:
             - containerPort: 3000
