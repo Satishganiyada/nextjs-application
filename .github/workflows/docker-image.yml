@@ -6,7 +6,7 @@ on:
     branches: [ "main" ]
 permissions:
           contents: write
-          
+
 jobs:
 
   build:
@@ -43,3 +43,12 @@ jobs:
         git add deployment.yaml 
         git commit -m "Updated deployment.yaml  from actions"
         git push
+  deploy:
+    runs-on: "minikube-ec2"
+    steps:
+    - uses: actions/checkout@v4
+    - name: "check deployment.yaml "
+      run: cat deployment.yaml 
+    - name: Run the deployment
+      run: kubectl apply -f deployment.yaml 
+    
