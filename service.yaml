@@ -4,9 +4,10 @@ metadata:
   name: my-service
 spec:
   selector:
-    app: nextjs 
+    app: nextjs
+  type: NodePort        # MUST specify NodePort
   ports:
     - protocol: TCP
-      port: 3000
-      targetPort: 3000
-      nodePort: 30080
+      port: 3000        # cluster-internal port
+      targetPort: 3000  # container port
+      nodePort: 30080   # external port on nodes
