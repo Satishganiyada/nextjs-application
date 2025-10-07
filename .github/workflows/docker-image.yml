@@ -46,13 +46,14 @@ jobs:
         git add deployment.yaml 
         git commit -m "Updated deployment.yaml  from actions"
         git push
-  # deploy:
-  #   needs: build
-  #   runs-on: "self-hosted"
-  #   steps:
-  #   - uses: actions/checkout@v4
-  #   - name: "check deployment.yaml "
-  #     run: cat deployment.yaml 
-  #   - name: Run the deployment
-  #     run: |
-  #       minikube kubectl -- apply -f deployment.yaml 
+        
+  deploy:
+    needs: build
+    runs-on: "self-hosted"
+    steps:
+    - uses: actions/checkout@v4
+    - name: "check deployment.yaml "
+      run: cat deployment.yaml 
+    - name: Run the deployment
+      run: |
+        minikube kubectl -- apply -f deployment.yaml 
