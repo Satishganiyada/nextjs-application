@@ -6,7 +6,8 @@ on:
     branches: [ "main" ]
 permissions:
           contents: write
-
+env:
+  IMAGE_NAME: ghcr.io/${{ secrets.GHCR_USER }}/$GITHUB_REPOSITORY:v${{ github.run_number }}
 jobs:
 
   build:
@@ -16,17 +17,17 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag satish2323/nextjs-app:v${{ github.run_number }}
+      run: docker build . --file Dockerfile --tag $IMAGE_NAME
     - name: check images
       run: docker images
-    - name: docker login
-      run: docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD_TOKEN }}
+    - name: ghcr login
+      run: docker login ghcr.io -u ${{ secrets.GHCR_USER }} -p ${{ secrets.GHCR_TOKEN }}
     - name: pushing image
-      run: docker push satish2323/nextjs-app:v${{ github.run_number }}
+      run: docker push $IMAGE_NAME
 
     - name: update tag in Deployment file
       run: |
-        sed -i 's|satish2323/nextjs-app:v[0-9]\+|satish2323/nextjs-app:v${{ github.run_number }}|' deployment.yaml
+        sed -i "s|satish2323/nextjs-app:v[0-9]\+|$IMAGE_NAME|" deployment.yaml
         cat deployment.yaml 
 
     - name: push deployment file to repo 
@@ -43,13 +44,13 @@ jobs:
         git add deployment.yaml 
         git commit -m "Updated deployment.yaml  from actions"
         git push
-  deploy:
-    needs: build
-    runs-on: "self-hosted"
-    steps:
-    - uses: actions/checkout@v4
-    - name: "check deployment.yaml "
-      run: cat deployment.yaml 
-    - name: Run the deployment
-      run: |
-        minikube kubectl -- apply -f deployment.yaml 
+  # deploy:
+  #   needs: build
+  #   runs-on: "self-hosted"
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #   - name: "check deployment.yaml "
+  #     run: cat deployment.yaml 
+  #   - name: Run the deployment
+  #     run: |
+  #       minikube kubectl -- apply -f deployment.yaml 
