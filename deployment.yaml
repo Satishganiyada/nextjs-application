@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: nextjs
-          image: ghcr.io/satishganiyada/nextjs-application:v11
+          image: ghcr.io/satishganiyada/nextjs-application:v25
           imagePullPolicy: Always     
           ports:
             - containerPort: 3000
