@@ -98,3 +98,6 @@ Make sure you have the following installed:
 
 ### port-forwarding the application to acess  it in the browser:
 - kubectl port-forward svc/my-service 5000:3000 --address 0.0.0.0 &
+
+
+###
