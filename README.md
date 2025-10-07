@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js Application
+
+A modern, production-ready Next.js application scaffolded using `create-next-app`.  
+
+---
+
+## 🔍 Table of Contents
+
+- [About](#about)  
+- [Features](#features)  
+- [Tech Stack](#tech-stack)  
+- [Getting Started](#getting-started)  
+- [Configuration](#configuration)  
+- [Running Locally](#running-locally)  
+- [Building & Deployment](#building--deployment)  
+- [Docker Setup](#docker-setup)  
+- [Kubernetes / YAML Manifests](#kubernetes--yaml-manifests)  
+ 
+
+---
+
+## About
+
+This project demonstrates a Next.js application built with TypeScript, ready for production deployment. It includes configuration for containerization, orchestration, and environment-based settings.  
+
+It’s structured to be extended — you can slot in pages, APIs, state management, or UI libraries easily.
+
+---
+
+## Features
+
+- Server-side rendering / Static generation via Next.js  
+- TypeScript support  
+- PostCSS / CSS configuration  
+- Dockerfile included  
+- Kubernetes / YAML manifests for deployment  
+- Environment-based configuration  
+- Modular folder structure  
+
+---
+
+## Tech Stack
+
+| Layer           | Technology / Tool           |
+|----------------|------------------------------|
+| Framework       | Next.js (TypeScript)         |
+| Styling         | CSS / PostCSS                |
+| Containerization| Docker                       |
+| Deployment       | Kubernetes / YAML manifests |
+| Config & Env     | `next.config.ts`, `.env.*` |
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Make sure you have the following installed:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Node.js (v16 or newer preferred)  
+- npm / yarn / pnpm  
+- Docker (if you plan to containerize)  
+- Kubernetes / `kubectl` (optional, for deployment)  
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Clone the repository
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- git clone https://github.com/Satishganiyada/nextjs-application.git
+- cd nextjs-application
 
-## Learn More
+###  Install dependencies
+- npm install
 
-To learn more about Next.js, take a look at the following resources:
+### Running Locally
+### Start the development server:
+- npm run dev
+### To make a production build locally and preview:
+- npm run build
+- npm start
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Docker Setup:
+### Build Docker image
+- docker build -t nextjs-app:latest .
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Run container
+- docker run -p 3000:3000 nextjs-app:latest
 
-## Deploy on Vercel
+### Kubernetes / YAML Manifests:
+### The repo includes deployment.yaml (and possibly service.yaml) for deploying in a k8s cluster. You can:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- kubectl apply -f deployment.yaml
+- kubectl apply -f service.yaml
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Check the logs of the pods:
+- kubectl logs podname
+
+### Localtest application:
+- curl localhost:3000
+
+### port-forwarding the application to acess  it in the browser:
+- kubectl port-forward svc/my-service 5000:3000 --address 0.0.0.0 &
