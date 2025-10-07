@@ -7,7 +7,9 @@ on:
 permissions:
           contents: write
 env:
-  IMAGE_NAME: ghcr.io/${{ secrets.GHCR_USER }}/$GITHUB_REPOSITORY:v${{ github.run_number }}
+  IMAGE: ghcr.io/${{ secrets.GHCR_USER }}/${{ github.repository }}
+  TAG: v${{ github.run_number }}
+
 jobs:
 
   build:
@@ -17,17 +19,17 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag $IMAGE_NAME
+      run: docker build . --file Dockerfile --tag $IMAGE_NAME:$TAG
     - name: check images
       run: docker images
     - name: ghcr login
       run: docker login ghcr.io -u ${{ secrets.GHCR_USER }} -p ${{ secrets.GHCR_TOKEN }}
     - name: pushing image
-      run: docker push $IMAGE_NAME
+      run: docker push $IMAGE_NAME:$TAG
 
     - name: update tag in Deployment file
       run: |
-        sed -i "s|satish2323/nextjs-app:v[0-9]\+|$IMAGE_NAME|" deployment.yaml
+        sed -i "s|ghcr.io/satishganiyada/nextjs-application:v11[0-9]\+|$IMAGE_NAME:$TAG|" deployment.yaml
         cat deployment.yaml 
 
     - name: push deployment file to repo 
@@ -36,7 +38,7 @@ jobs:
         # git config --global user.name "Satishganiyada@users.noreply.github.com"
         # # git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
         # git add deployment.yaml 
-        # git commit -m "Updated deployment.yaml  from actions"
+        # git commit -m "Updated deployment.yaml  from actions with image tag $IMAGE_NAME:$TAG"
         # git push
 
         git config user.name "github-actions[bot]"
