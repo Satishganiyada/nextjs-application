@@ -26,19 +26,6 @@ This project demonstrates a Next.js application built with TypeScript, ready for
 It’s structured to be extended — you can slot in pages, APIs, state management, or UI libraries easily.
 
 ---
-
-## Features
-
-- Server-side rendering / Static generation via Next.js  
-- TypeScript support  
-- PostCSS / CSS configuration  
-- Dockerfile included  
-- Kubernetes / YAML manifests for deployment  
-- Environment-based configuration  
-- Modular folder structure  
-
----
-
 ## Tech Stack
 
 | Layer           | Technology / Tool           |
@@ -46,8 +33,7 @@ It’s structured to be extended — you can slot in pages, APIs, state manageme
 | Framework       | Next.js (TypeScript)         |
 | Styling         | CSS / PostCSS                |
 | Containerization| Docker                       |
-| Deployment       | Kubernetes / YAML manifests |
-| Config & Env     | `next.config.ts`, `.env.*` |
+| Deployment       | Kubernetes / YAML manifests /minikube |
 
 ---
 
@@ -58,9 +44,9 @@ It’s structured to be extended — you can slot in pages, APIs, state manageme
 Make sure you have the following installed:
 
 - Node.js (v16 or newer preferred)  
-- npm / yarn / pnpm  
-- Docker (if you plan to containerize)  
-- Kubernetes / `kubectl` (optional, for deployment)  
+- npm
+- Docker  
+- Kubernetes / minikube (for deployment)  
 
 ### Clone the repository
 
@@ -77,27 +63,56 @@ Make sure you have the following installed:
 - npm run build
 - npm start
 
-### Docker Setup:
-### Build Docker image
-- docker build -t nextjs-app:latest .
+# Minikube Setup
+`sudo apt update` <br>
+`sudo apt upgrade -y` <br>
+`sudo apt install ca-certificates curl gnupg` <br>
 
-### Run container
-- docker run -p 3000:3000 nextjs-app:latest
+`sudo install -m 0755 -d /etc/apt/keyrings` <br>
+`curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg` <br>
+`sudo chmod a+r /etc/apt/keyrings/docker.gpg` <br>
+
+`echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null`<br>
+
+`sudo apt update` <br>
+`sudo apt install docker-ce docker-ce-cli containerd.io ` <br>
+`docker-compose-plugin -y` <br>
+`sudo docker --version` <br>
+`sudo usermod -aG docker $USER` <br>
+
+`curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64` <br>
+`chmod +x minikube-linux-amd64` <br>
+
+`sudo mv minikube-linux-amd64 /usr/local/bin/minikube` <br>
+`minikube version` <br>
+
+`sudo usermod -aG docker $USER` <br>
+`newgrp docker` <br>
+
+`minikube start --driver=docker` <br>
+`minikube status` <br>
+
+`echo 'alias kubectl="minikube kubectl --"' >> ~/.bashrc` <br>
+`source ~/.bashrc` <br>
+
+`kubectl get nodes` <br>
 
 ### Kubernetes / YAML Manifests:
-### The repo includes deployment.yaml (and possibly service.yaml) for deploying in a k8s cluster. You can:
+The repo includes deployment.yaml, service.yaml for deploying application in a minikube. Run the below commands to create deployment and service:
+
+- kubectl create secret docker-registry ghcr-secret --docker-server=ghcr.io --docker-username=<GHCR_USERNAME> --docker-password=<GHCR_TOKEN> --docker-email=email
 
 - kubectl apply -f deployment.yaml
 - kubectl apply -f service.yaml
 
 ### Check the logs of the pods:
-- kubectl logs podname
-
-### Localtest application:
-- curl localhost:3000
+- kubectl logs <podname>
 
 ### port-forwarding the application to acess  it in the browser:
 - kubectl port-forward svc/my-service 5000:3000 --address 0.0.0.0 &
 
-
-###
+### Access the application from browser using ec2 public IP
+- http://EC2_PUBLIC_IP:5000
