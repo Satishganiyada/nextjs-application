@@ -51,7 +51,15 @@ jobs:
     needs: build
     runs-on: "self-hosted"
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout latest code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        ref: main
+
+    - name: Pull latest changes
+      run: git pull origin main
+
     - name: "check deployment.yaml "
       run: cat deployment.yaml 
     - name: Run the deployment
